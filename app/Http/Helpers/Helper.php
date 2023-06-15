@@ -232,7 +232,7 @@ if (!function_exists('storeTranscation')) {
       $pre_balance = NULL;
       $after_balance = NULL;
     }
-    //store data to transcation table 
+    //store data to transcation table
     $transcation = Transaction::create([
       'transcation_id' => time(),
       'booking_id' => $booking->id,
@@ -256,7 +256,7 @@ if (!function_exists('storeTranscation')) {
 if (!function_exists('storeProductTranscation')) {
   function storeProductTranscation($orderInfo)
   {
-    //store data to transcation table 
+    //store data to transcation table
     $transcation = Transaction::create([
       'transcation_id' => time(),
       'booking_id' => $orderInfo->id,
@@ -688,5 +688,44 @@ if (!function_exists('isTicketPurchaseVenueBackend')) {
     } else {
       return ['status' => 'false', 'p_qty' => $qty];
     }
+  }
+}
+
+if (!function_exists('makeToken')) {
+  function makeToken($count): string
+  {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $randomString = '';
+    for ($i = 0; $i < $count; $i++) {
+      $index = rand(0, strlen($characters) - 1);
+      $randomString .= $characters[$index];
+    }
+
+    return $randomString;
+  }
+}
+
+if (!function_exists('randomNumbers')) {
+  function randomNumbers($count): string
+  {
+    $numbers = '123456789';
+
+    $randomNumbers = '';
+
+    for ($i = 0; $i < $count; $i++) {
+      $index = rand(0, strlen($numbers) - 1);
+      $randomNumbers .= $numbers[$index];
+    }
+
+    return $randomNumbers;
+  }
+}
+
+if (!function_exists('filterNullData')) {
+  function filterNullData($values): array
+  {
+    return array_filter($values, function ($value) {
+      return $value !== null && $value !== false && $value !== '';
+    });
   }
 }

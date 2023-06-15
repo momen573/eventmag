@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BackEnd\Event\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +18,22 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
     Route::post('/transcation/delete', 'BackEnd\AdminController@destroy')->name('admin.transcation.delete');
     Route::post('/transcation/bulk-delete', 'BackEnd\AdminController@bulk_destroy')->name('admin.transcation.bulk_delete');
   });
+
+
+  //todo add place permission
+  Route::get('/places', 'BackEnd\Place\PlaceController@index')->name('admin.places.index');
+  Route::post('/places', 'BackEnd\Place\PlaceController@store')->name('admin.places.store');
+  Route::post('/places/{place}', 'BackEnd\Place\PlaceController@update')->name('admin.places.update');
+  Route::delete('/places/{place}', 'BackEnd\Place\PlaceController@destroy')->name('admin.places.destroy');
+  Route::post('/places/groups/destroy', 'BackEnd\Place\PlaceController@destroy_groups')->name('admin.places.destroy_groups');
+
+
+  //todo add artist permission
+  Route::get('/artists', 'BackEnd\Artist\ArtistController@index')->name('admin.artists.index');
+  Route::post('/artists', 'BackEnd\Artist\ArtistController@store')->name('admin.artists.store');
+  Route::post('/artists/{artist}', 'BackEnd\Artist\ArtistController@update')->name('admin.artists.update');
+  Route::delete('/artists/{artist}', 'BackEnd\Artist\ArtistController@destroy')->name('admin.artists.destroy');
+  Route::post('/artists/groups/destroy', 'BackEnd\Artist\ArtistController@destroy_groups')->name('admin.artists.destroy_groups');
 
 
   // change admin-panel theme (dark/light) route
@@ -187,8 +202,7 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
   });
 
 
-
-  Route::get('send-mail-template',  'BackEnd\Organizer\OrganizerManagementController@send_mail_template')->name('send.mail-tempalte');
+  Route::get('send-mail-template', 'BackEnd\Organizer\OrganizerManagementController@send_mail_template')->name('send.mail-tempalte');
 
   // organizer management route start
   Route::prefix('/organizer-management')->middleware('permission:Organizer Mangement')->group(function () {
@@ -200,7 +214,6 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
     Route::post('/save-organzer', 'BackEnd\Organizer\OrganizerManagementController@create')->name('admin.organizer_management.save-organizer');
 
     Route::get('/registered-organizers', 'BackEnd\Organizer\OrganizerManagementController@index')->name('admin.organizer_management.registered_organizer');
-
 
 
     Route::prefix('/organizer/{id}')->group(function () {
@@ -215,8 +228,6 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
       Route::post('/update', 'BackEnd\Organizer\OrganizerManagementController@update')->name('admin.organizer_management.organizer.update_organizer');
 
       Route::post('/update/organizer/balance', 'BackEnd\Organizer\OrganizerManagementController@update_organizer_balance')->name('admin.organizer_management.update_organizer_balance');
-
-
 
 
       Route::get('/change-password', 'BackEnd\Organizer\OrganizerManagementController@changePassword')->name('admin.organizer_management.organizer.change_password');
@@ -303,11 +314,9 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
   });
 
 
-
   //shop related routes are goes here=====
   Route::get('product/setting', 'BackEnd\ShopManagement\ProductController@settings')->name('admin.product.setting');
   Route::post('product/setting/update', 'BackEnd\ShopManagement\ProductController@setting_update')->name('admin.product.setting.update');
-
 
 
   Route::prefix('shop-management')->middleware(['permission:Shop Management'])->group(function () {
@@ -358,7 +367,6 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/product-order/report', 'BackEnd\ShopManagement\ProductOrderController@report')->name('admin.product_order.report');
     Route::get('/product-order/export', 'BackEnd\ShopManagement\ProductOrderController@export')->name('admin.product_order.export');
   });
-
 
 
   // language management route start
@@ -545,7 +553,6 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/section-titles', 'BackEnd\HomePage\SectionTitleController@index')->name('admin.home_page.section_titles');
 
     Route::post('/update-section-titles', 'BackEnd\HomePage\SectionTitleController@update')->name('admin.home_page.update_section_title');
-
 
 
     // features section
