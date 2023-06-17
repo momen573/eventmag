@@ -18,16 +18,22 @@ class PlaceController extends Controller
 
   public function index(Request $request)
   {
-    $language = Language::where('code', $request->language)->firstOrFail();
+    $language = Language::query()
+      ->where('code', '=', $request->input('language'))
+      ->firstOrFail();
+
     $information['language'] = $language;
 
-    $information['places'] = Place::where('language_id', $language->id)
+    $information['places'] = Place::query()
+      ->where('language_id', '=', $language->id)
       ->orderByDesc('id')
       ->get();
 
     $information['langs'] = Language::all();
 
-    $information['themeInfo'] = DB::table('basic_settings')->select('theme_version')->first();
+    $information['themeInfo'] = DB::table('basic_settings')
+      ->select('theme_version')
+      ->first();
 
     return view('backend.place.index', $information);
   }
@@ -35,18 +41,16 @@ class PlaceController extends Controller
   public function store(StorePlaceRequest $request)
   {
     if ($request->hasFile('images_media')) {
-      $images = $request->file('images_media');
-
       $request->merge([
-        'images' => $this->multipleUpload($images, 'places/images'),
+        'images' => $this->multipleUpload($request->file('images_media'),
+          'places/images'),
       ]);
     }
 
     if ($request->hasFile('thumbnail_media')) {
-      $thumbnail = $request->file('thumbnail_media');
-
       $request->merge([
-        'thumbnail' => $this->singleUpload($thumbnail, 'places/thumbnails'),
+        'thumbnail' => $this->singleUpload($request->file('thumbnail_media'),
+          'places/thumbnails'),
       ]);
     }
 
@@ -64,13 +68,12 @@ class PlaceController extends Controller
     $current_thumbnail = json_decode($place->getRawOriginal('thumbnail'));
 
     if ($request->hasFile('images_media')) {
-      $images = $request->file('images_media');
-
       foreach ($current_images as $current_image) {
         $this->deleteFile($current_image);
       }
 
-      $images_media_array = $this->multipleUpload($images, 'places/images');
+      $images_media_array = $this->multipleUpload($request->file('images_media'),
+        'places/images');
 
       $request->merge([
         'images' => $images_media_array,
@@ -78,14 +81,13 @@ class PlaceController extends Controller
     }
 
     if ($request->hasFile('thumbnail_media')) {
-      $thumbnail = $request->file('thumbnail_media');
-
       if (!empty($current_thumbnail)) {
         $this->deleteFile($current_thumbnail);
       }
 
       $request->merge([
-        'thumbnail' => $this->singleUpload($thumbnail, 'places/thumbnails'),
+        'thumbnail' => $this->singleUpload($request->file('thumbnail_media'),
+          'places/thumbnails'),
       ]);
     }
 

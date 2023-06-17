@@ -14,7 +14,7 @@ class UpdatePlaceRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'title' => ['nullable', 'string', 'max:255'],
+      'title' => ['required', 'string', 'max:255'],
       'images_media' => ['nullable', 'array', 'distinct', 'max:10'],
       'images_media.*' => ['required', 'mimes:jpg,png,jpeg', 'max:2048'],
       'thumbnail_media' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048'],

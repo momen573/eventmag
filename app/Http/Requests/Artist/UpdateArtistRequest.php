@@ -16,9 +16,9 @@ class UpdateArtistRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'full_name' => ['nullable', 'string', 'max:255'],
+      'full_name' => ['required', 'string', 'max:255'],
       'image_media' => ['nullable', 'mimes:jpg,png,jpeg', 'max:2048'],
-      'status' => ['nullable', Rule::in(Artist::$statuses)],
+      'status' => ['required', Rule::in(Artist::$statuses)],
       'description' => ['nullable', 'max:50000'],
     ];
   }

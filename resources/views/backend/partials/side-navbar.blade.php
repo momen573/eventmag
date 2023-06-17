@@ -100,6 +100,16 @@
           </li>
         @endif
 
+        {{-- place --}}
+        @if (is_null($roleInfo) || (!empty($rolePermissions)))
+          <li class="nav-item @if (request()->routeIs('admin.artists.index')) active @endif">
+            <a href="{{ route('admin.artists.index', ['language' => $defaultLang->code]) }}">
+              <i class="fal fa-paint-brush"></i>
+              <p>{{ __('Artist Management') }}</p>
+            </a>
+          </li>
+        @endif
+
         {{-- event --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Event Management', $rolePermissions)))
           <li

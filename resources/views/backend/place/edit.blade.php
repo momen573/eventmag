@@ -15,10 +15,9 @@
 
           @method('POST')
           @csrf
-          {{--          <input type="hidden" id="in_id" name="id">--}}
 
           <div class="form-group">
-            <label for="images_media[]">{{ __('Images') . '*' }}</label>
+            <label for="images_media[]">{{ __('Images') }}</label>
             <br>
             <div class="thumb-preview">
               <img src="{{ asset('assets/admin/img/noimage.jpg') }}" alt="..." class="uploaded-img">
@@ -41,7 +40,7 @@
           </div>
 
           <div class="form-group">
-            <label for="thumbnail_media">{{ __('Thumbnail') . '*' }}</label>
+            <label for="thumbnail_media">{{ __('Thumbnail') }}</label>
             <br>
             <div class="thumb-preview">
               <img src="{{ asset('assets/admin/img/noimage.jpg') }}" alt="..." class="uploaded-img">

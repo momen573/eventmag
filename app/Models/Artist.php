@@ -30,8 +30,8 @@ class Artist extends Model
   const ACTIVE = 'active';
   static array $statuses =
     [
-      self::INACTIVE,
       self::ACTIVE,
+      self::INACTIVE,
     ];
 
   protected $casts =
