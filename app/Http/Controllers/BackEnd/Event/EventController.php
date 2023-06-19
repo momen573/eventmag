@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\BackEnd\Event;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Artist\AttachEventArtistsRequest;
+use App\Http\Requests\Artist\DetachEventArtistsRequest;
 use App\Http\Requests\Event\StoreRequest;
 use App\Http\Requests\Event\UpdateRequest;
+use App\Models\Artist;
 use App\Models\City;
 use App\Models\Country;
 use Illuminate\Http\Request;
@@ -21,7 +24,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Mews\Purifier\Facades\Purifier;
-
 
 
 class EventController extends Controller
@@ -59,11 +61,13 @@ class EventController extends Controller
     $information['events'] = $events;
     return view('backend.event.index', $information);
   }
+
   //choose_event_type
   public function choose_event_type()
   {
     return view('backend.event.event_type');
   }
+
   //online_event
   public function add_event()
   {
@@ -75,7 +79,7 @@ class EventController extends Controller
     $organizers = Organizer::get();
     $information['organizers'] = $organizers;
 
-    $information['getCurrencyInfo']  = $this->getCurrencyInfo();
+    $information['getCurrencyInfo'] = $this->getCurrencyInfo();
 
     return view('backend.event.create', $information);
   }
@@ -116,6 +120,7 @@ class EventController extends Controller
     $pi->save();
     return response()->json(['status' => 'success', 'file_id' => $pi->id]);
   }
+
   public function imagermv(Request $request)
   {
     $pi = EventImage::where('id', $request->fileid)->first();
@@ -128,10 +133,10 @@ class EventController extends Controller
   {
     DB::transaction(function () use ($request) {
 
-      //calculate duration 
+      //calculate duration
       if ($request->date_type == 'single') {
         $start = Carbon::parse($request->start_date . $request->start_time);
-        $end =  Carbon::parse($request->end_date . $request->end_time);
+        $end = Carbon::parse($request->end_date . $request->end_time);
         $diffent = DurationCalulate($start, $end);
       }
       //calculate duration end
@@ -157,7 +162,7 @@ class EventController extends Controller
         $i = 1;
         foreach ($request->m_start_date as $key => $date) {
           $start = Carbon::parse($date . $request->m_start_time[$key]);
-          $end =  Carbon::parse($request->m_end_date[$key] . $request->m_end_time[$key]);
+          $end = Carbon::parse($request->m_end_date[$key] . $request->m_end_time[$key]);
           $diffent = DurationCalulate($start, $end);
 
           EventDates::create([
@@ -240,11 +245,12 @@ class EventController extends Controller
     $date->delete();
     return 'success';
   }
+
   /**
    * Update status (active/DeActive) of a specified resource.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
+   * @param \Illuminate\Http\Request $request
+   * @param int $id
    * @return \Illuminate\Http\Response
    */
   public function updateStatus(Request $request, $id)
@@ -258,11 +264,12 @@ class EventController extends Controller
 
     return redirect()->back();
   }
+
   /**
    * Update featured status of a specified resource.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
+   * @param \Illuminate\Http\Request $request
+   * @param int $id
    * @return \Illuminate\Http\Response
    */
   public function updateFeatured(Request $request, $id)
@@ -291,15 +298,16 @@ class EventController extends Controller
 
     $information['languages'] = Language::all();
     $information['countries'] = Country::get();
-    $information['cities'] = City::where('country_id',  $event->country)->orderBy('name', 'asc')->get();
-    $information['states'] = State::where('country_id',  $event->country)->orderBy('name', 'asc')->get();
+    $information['cities'] = City::where('country_id', $event->country)->orderBy('name', 'asc')->get();
+    $information['states'] = State::where('country_id', $event->country)->orderBy('name', 'asc')->get();
     $organizers = Organizer::get();
     $information['organizers'] = $organizers;
 
-    $information['getCurrencyInfo']  = $this->getCurrencyInfo();
+    $information['getCurrencyInfo'] = $this->getCurrencyInfo();
 
     return view('backend.event.edit', $information);
   }
+
   public function imagedbrmv(Request $request)
   {
     $pi = EventImage::where('id', $request->fileid)->first();
@@ -313,6 +321,7 @@ class EventController extends Controller
       return 'false';
     }
   }
+
   public function images($portid)
   {
     $images = EventImage::where('event_id', $portid)->get();
@@ -321,10 +330,10 @@ class EventController extends Controller
 
   public function update(UpdateRequest $request)
   {
-    //calculate duration 
+    //calculate duration
     if ($request->date_type == 'single') {
       $start = Carbon::parse($request->start_date . $request->start_time);
-      $end =  Carbon::parse($request->end_date . $request->end_time);
+      $end = Carbon::parse($request->end_date . $request->end_time);
       $diffent = DurationCalulate($start, $end);
     }
     //calculate duration end
@@ -395,7 +404,7 @@ class EventController extends Controller
       $i = 1;
       foreach ($request->m_start_date as $key => $date) {
         $start = Carbon::parse($date . $request->m_start_time[$key]);
-        $end =  Carbon::parse($request->m_end_date[$key] . $request->m_end_time[$key]);
+        $end = Carbon::parse($request->m_end_date[$key] . $request->m_end_time[$key]);
         $diffent = DurationCalulate($start, $end);
 
         if (!empty($request->date_ids[$key])) {
@@ -445,10 +454,11 @@ class EventController extends Controller
 
     return response()->json(['status' => 'success'], 200);
   }
+
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param int $id
    * @return \Illuminate\Http\Response
    */
   public function destroy($id)
@@ -467,7 +477,7 @@ class EventController extends Controller
       $event_image->delete();
     }
 
-    //bookings 
+    //bookings
     $bookings = $event->booking()->get();
     foreach ($bookings as $booking) {
       // first, delete the attachment
@@ -501,6 +511,7 @@ class EventController extends Controller
 
     return redirect()->back()->with('success', 'Event deleted successfully!');
   }
+
   //bulk_delete
   public function bulk_delete(Request $request)
   {
@@ -519,7 +530,7 @@ class EventController extends Controller
         $event_image->delete();
       }
 
-      //bookings 
+      //bookings
       $bookings = $event->booking()->get();
       foreach ($bookings as $booking) {
         // first, delete the attachment
@@ -553,6 +564,44 @@ class EventController extends Controller
       $event->delete();
     }
     Session::flash('success', 'Tickets are deleted successfully!');
+    return response()->json(['status' => 'success'], 200);
+  }
+
+  public function attach_artists_view(Event $event)
+  {
+    $information['event'] = $event;
+
+    $information['items'] = $event->artists;
+
+    $information['save_ids'] = $event->artists->pluck('id')->toArray();
+
+    $information['artists'] = Artist::query()
+      ->where('status', '=', Artist::ACTIVE)
+      ->orderByDesc('id')
+      ->get();
+
+    $information['themeInfo'] = DB::table('basic_settings')
+      ->select('theme_version')
+      ->first();
+
+    return view('backend.event.attach_artists', $information);
+  }
+
+  public function attach_artists(Event $event, AttachEventArtistsRequest $request)
+  {
+    $event->artists()->attach(filterNullData($request->input('artists')));
+
+    Session::flash('success', 'Artists attached to event successfully');
+
+    return response()->json(['status' => 'success'], 200);
+  }
+
+  public function detach_artists(Event $event, DetachEventArtistsRequest $request)
+  {
+    $event->artists()->detach(filterNullData($request->input('ids')));
+
+    Session::flash('success', 'Artists detached to event successfully');
+
     return response()->json(['status' => 'success'], 200);
   }
 }

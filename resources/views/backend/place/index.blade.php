@@ -36,11 +36,11 @@
 
             <div class="col-lg-4 offset-lg-1 mt-2 mt-lg-0">
               <a href="#" data-toggle="modal" data-target="#createModal"
-                class="btn btn-primary btn-sm float-lg-right float-left"><i class="fas fa-plus"></i>
+                 class="btn btn-primary btn-sm float-lg-right float-left"><i class="fas fa-plus"></i>
                 {{ __('Add Place') }}</a>
 
               <button class="btn btn-danger btn-sm float-right mr-2 d-none bulk-delete"
-                data-href="{{ route('admin.places.destroy_groups') }}">
+                      data-href="{{ route('admin.places.destroy_groups') }}">
                 <i class="flaticon-interface-5"></i> {{ __('Delete') }}
               </button>
             </div>
@@ -56,80 +56,96 @@
                 <div class="table-responsive">
                   <table class="table table-striped mt-3" id="basic-datatables">
                     <thead>
-                      <tr>
-                        <th scope="col">
-                          <input type="checkbox" class="bulk-check" data-val="all">
-                        </th>
-                        <th scope="col">{{ __('Thumbnail') }}</th>
-                        <th scope="col">{{ __('Images') }}</th>
-                        <th scope="col">{{ __('Title') }}</th>
-                        <th scope="col">{{ __('X_Location') }}</th>
-                        <th scope="col">{{ __('Y_Location') }}</th>
-                        <th scope="col">{{ __('Description') }}</th>
-                        <th scope="col">{{ __('Language') }}</th>
-                        <th scope="col">{{ __('Actions') }}</th>
-                      </tr>
+                    <tr>
+                      <th scope="col">
+                        <input type="checkbox" class="bulk-check" data-val="all">
+                      </th>
+                      <th scope="col">{{ __('Row') }}</th>
+                      <th scope="col">{{ __('Thumbnail') }}</th>
+                      <th scope="col">{{ __('Images') }}</th>
+                      <th scope="col">{{ __('Title') }}</th>
+                      <th scope="col">{{ __('X_Location') }}</th>
+                      <th scope="col">{{ __('Y_Location') }}</th>
+                      <th scope="col">{{ __('Description') }}</th>
+                      <th scope="col">{{ __('Language') }}</th>
+                      <th scope="col">{{ __('Actions') }}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      @foreach ($places as $place)
-                        <tr>
-                          <td>
-                            <input type="checkbox" class="bulk-check" data-val="{{ $place->id }}">
-                          </td>
-                          <td>
-                            <img src="{{ $place->thumbnail }}"
-                              class="img-fluid mh60" alt="">
-                          </td>
-                          <td>
-                            @if($place->images)
-                              @foreach($place->images as $image)
-                                <img src="{{ $image }}"
-                                     class="img-fluid mh60" alt="">
-                              @endforeach
-                            @else
-                              _____
-                            @endif
-                          </td>
-                          <td>
-                            {{ $place->title }}
-                          </td>
-                          <td>
+                    @foreach ($places as $key=>$place)
+                      <tr>
+                        <td>
+                          <input type="checkbox" class="bulk-check" data-val="{{ $place->id }}">
+                        </td>
+                        <td>
+                          {{ $key+1 }}
+                        </td>
+                        <td>
+                          <img src="{{ $place->thumbnail }}"
+                               class="img-fluid mh60" alt="">
+                        </td>
+                        <td>
+                          @if($place->images)
+                            @foreach($place->images as $image)
+                              <img src="{{ $image }}"
+                                   class="img-fluid mh60" alt="">
+                            @endforeach
+                          @else
+                            _____
+                          @endif
+                        </td>
+                        <td>
+                          {{ $place->title }}
+                        </td>
+                        <td>
+                          @if(!empty($artist->x_location))
                             {{ $place->x_location }}
-                          </td>
-                          <td>
+                          @else
+                            <p class="text-center">_____</p>
+                          @endif
+                        </td>
+                        <td>
+                          @if(!empty($artist->y_location))
                             {{ $place->y_location }}
-                          </td>
-                          <td>
-                            {{ strlen($place->description) > 50 ? mb_substr($place->description, 0, 50, 'UTF-8') . '...' : $place->description }}
-                          </td>
+                          @else
+                            <p class="text-center">_____</p>
+                          @endif
+                        </td>
+                        <td>
+                          @if(!empty($artist->description))
+                            {{ strlen($artist->description) > 50 ? mb_substr($artist->description, 0, 50, 'UTF-8') . '...' : $artist->description }}
+                          @else
+                            <p class="text-center">_____</p>
+                          @endif
+                        </td>
 
-                          <td>
-                            {{ $place->language->name }}
-                          </td>
+                        <td>
+                          {{ $place->language->name }}
+                        </td>
 
-                          <td>
-                            <a class="btn btn-secondary mt-1 btn-xs mr-1 editBtn" href="#" data-toggle="modal"
-                              data-target="#editPlaceModal">
+                        <td>
+                          <a class="btn btn-secondary mt-1 btn-xs mr-1 editBtn" href="#" data-toggle="modal"
+                             data-target="#editPlaceModal">
                               <span class="btn-label">
                                 <i class="fas fa-edit"></i>
                               </span>
-                            </a>
+                          </a>
 
-                            <form class="deleteForm d-inline-block"
-                              action="{{ route('admin.places.destroy', $place->id) }}"
-                              method="post">
+                          <form class="deleteForm d-inline-block"
+                                action="{{ route('admin.places.destroy', $place->id) }}"
+                                method="post">
 
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-danger mt-1 btn-xs deleteBtn">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger mt-1 btn-xs deleteBtn">
                                 <span class="btn-label">
                                   <i class="fas fa-trash"></i>
                                 </span>
-                              </button>
-                            </form>
-                          </td>
-                        </tr>
-                      @endforeach
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    @endforeach
                     </tbody>
                   </table>
                 </div>

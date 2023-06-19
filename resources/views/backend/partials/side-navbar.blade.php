@@ -100,7 +100,7 @@
           </li>
         @endif
 
-        {{-- place --}}
+        {{-- artist --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions)))
           <li class="nav-item @if (request()->routeIs('admin.artists.index')) active @endif">
             <a href="{{ route('admin.artists.index', ['language' => $defaultLang->code]) }}">
@@ -120,6 +120,7 @@
             @elseif (request()->routeIs('admin.event_management.edit_event')) active
             @elseif (request()->routeIs('admin.event.ticket')) active
             @elseif (request()->routeIs('admin.event.add.ticket')) active
+            @elseif (request()->routeIs('admin.artists.attach_artists_view')) active
             @elseif (request()->routeIs('admin.event.edit.ticket')) active @endif">
             <a data-toggle="collapse" href="#event">
               <i class="fal fa-book"></i>
@@ -136,6 +137,7 @@
               @elseif (request()->routeIs('admin.event_management.edit_event')) show
               @elseif (request()->routeIs('admin.event.ticket')) show
               @elseif (request()->routeIs('admin.event.add.ticket')) show
+              @elseif (request()->routeIs('admin.artists.attach_artists_view')) show
               @elseif (request()->routeIs('admin.event.edit.ticket')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.event_management.categories') ? 'active' : '' }}">
@@ -152,6 +154,7 @@
                     request()->routeIs('admin.event_management.edit_event') ||
                     request()->routeIs('admin.event.ticket') ||
                     request()->routeIs('admin.event.add.ticket') ||
+                    request()->routeIs('admin.event_management.attach_artists_view') ||
                     request()->routeIs('admin.event.edit.ticket')
                         ? 'true'
                         : 'false' }}">
@@ -166,6 +169,7 @@
                     @elseif(request()->routeIs('admin.event_management.edit_event')) show
                     @elseif(request()->routeIs('admin.event.ticket')) show
                     @elseif(request()->routeIs('admin.event.add.ticket')) show
+                    @elseif(request()->routeIs('admin.artists.attach_artists_view')) show
                     @elseif(request()->routeIs('admin.event.edit.ticket')) show @endif"
                     id="EventsManagement">
                     <ul class="nav nav-collapse subnav">

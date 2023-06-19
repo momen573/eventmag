@@ -37,7 +37,7 @@
                 {{ __('Choose Image') }}
                 <input id="images_media" type="file" class="img-input" name="images_media[]" multiple>
               </div>
-              <p id="err_images" class="mt-1 mb-0 text-danger em"></p>
+              <p id="err_images_media" class="mt-1 mb-0 text-danger em"></p>
             </div>
           </div>
 

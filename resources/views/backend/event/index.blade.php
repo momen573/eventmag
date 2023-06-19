@@ -62,7 +62,7 @@
 
               <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle btn-sm float-right" type="button"
-                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {{ __('Add Event') }}
                 </button>
 
@@ -78,7 +78,7 @@
               </div>
 
               <button class="btn btn-danger btn-sm float-right mr-2 d-none bulk-delete"
-                data-href="{{ route('admin.event_management.bulk_delete_event') }}">
+                      data-href="{{ route('admin.event_management.bulk_delete_event') }}">
                 <i class="flaticon-interface-5"></i> {{ __('Delete') }}
               </button>
             </div>
@@ -94,7 +94,7 @@
                   <form action="" method="get">
                     <input type="hidden" name="language" value="{{ request()->input('language') }}" class="hidden">
                     <input type="text" name="title" value="{{ request()->input('title') }}" name="name"
-                      placeholder="Enter Event Name" class="form-control">
+                           placeholder="Enter Event Name" class="form-control">
                   </form>
                 </div>
               </div>
@@ -105,118 +105,126 @@
                 <div class="table-responsive">
                   <table class="table table-striped mt-3">
                     <thead>
-                      <tr>
-                        <th scope="col">
-                          <input type="checkbox" class="bulk-check" data-val="all">
-                        </th>
-                        <th scope="col" width="30%">{{ __('Title') }}</th>
-                        <th scope="col">{{ __('Organizer') }}</th>
-                        <th scope="col">{{ __('Type') }}</th>
-                        <th scope="col">{{ __('Category') }}</th>
-                        <th scope="col">{{ __('Ticket') }}</th>
-                        <th scope="col">{{ __('Status') }}</th>
-                        <th scope="col">{{ __('Featured') }}</th>
-                        <th scope="col">{{ __('Actions') }}</th>
-                      </tr>
+                    <tr>
+                      <th scope="col">
+                        <input type="checkbox" class="bulk-check" data-val="all">
+                      </th>
+                      <th scope="col" width="30%">{{ __('Title') }}</th>
+                      <th scope="col">{{ __('Organizer') }}</th>
+                      <th scope="col">{{ __('Type') }}</th>
+                      <th scope="col">{{ __('Category') }}</th>
+                      <th scope="col">{{ __('Ticket') }}</th>
+                      <th scope="col">{{ __('Artists') }}</th>
+                      <th scope="col">{{ __('Status') }}</th>
+                      <th scope="col">{{ __('Featured') }}</th>
+                      <th scope="col">{{ __('Actions') }}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      @foreach ($events as $event)
-                        <tr>
-                          <td>
-                            <input type="checkbox" class="bulk-check" data-val="{{ $event->id }}">
-                          </td>
-                          <td width="20%">
+                    @foreach ($events as $event)
+                      <tr>
+                        <td>
+                          <input type="checkbox" class="bulk-check" data-val="{{ $event->id }}">
+                        </td>
+                        <td width="20%">
+                          <a target="_blank"
+                             href="{{ route('event.details', ['slug' => $event->slug, 'id' => $event->id]) }}">{{ strlen($event->title) > 30 ? mb_substr($event->title, 0, 30, 'UTF-8') . '....' : $event->title }}</a>
+                        </td>
+                        <td>
+                          @if ($event->organizer)
                             <a target="_blank"
-                              href="{{ route('event.details', ['slug' => $event->slug, 'id' => $event->id]) }}">{{ strlen($event->title) > 30 ? mb_substr($event->title, 0, 30, 'UTF-8') . '....' : $event->title }}</a>
-                          </td>
-                          <td>
-                            @if ($event->organizer)
-                              <a target="_blank"
-                                href="{{ route('admin.organizer_management.organizer_details', ['id' => $event->organizer_id, 'language' => $defaultLang->code]) }}">
-                                {{ strlen($event->organizer->username) > 20 ? mb_substr($event->organizer->username, 0, 20, 'UTF-8') . '....' : $event->organizer->username }}</a>
-                            @else
-                              <span class="badge badge-success">{{ __('Admin') }}</span>
-                            @endif
-                          </td>
-                          <td>
-                            {{ ucfirst($event->event_type) }}
-                          </td>
-                          <td>
-                            {{ $event->category }}
-                          </td>
-                          <td>
-                            @if ($event->event_type == 'venue')
-                              <a href="{{ route('admin.event.ticket', ['language' => request()->input('language'), 'event_id' => $event->id, 'event_type' => $event->event_type]) }}"
-                                class="btn btn-success btn-sm">{{ __('Manage') }}</a>
-                            @endif
-                          </td>
-                          <td>
-                            <form id="statusForm-{{ $event->id }}" class="d-inline-block"
-                              action="{{ route('admin.event_management.event.event_status', ['id' => $event->id, 'language' => request()->input('language')]) }}"
-                              method="post">
+                               href="{{ route('admin.organizer_management.organizer_details', ['id' => $event->organizer_id, 'language' => $defaultLang->code]) }}">
+                              {{ strlen($event->organizer->username) > 20 ? mb_substr($event->organizer->username, 0, 20, 'UTF-8') . '....' : $event->organizer->username }}</a>
+                          @else
+                            <span class="badge badge-success">{{ __('Admin') }}</span>
+                          @endif
+                        </td>
+                        <td>
+                          {{ ucfirst($event->event_type) }}
+                        </td>
+                        <td>
+                          {{ $event->category }}
+                        </td>
+                        <td>
+                          @if ($event->event_type == 'venue')
+                            <a
+                              href="{{ route('admin.event.ticket', ['language' => request()->input('language'), 'event_id' => $event->id, 'event_type' => $event->event_type]) }}"
+                              class="btn btn-success btn-sm">{{ __('Manage') }}</a>
+                          @endif
+                        </td>
 
-                              @csrf
-                              <select
-                                class="form-control form-control-sm {{ $event->status == 0 ? 'bg-warning text-dark' : 'bg-primary' }}"
-                                name="status"
-                                onchange="document.getElementById('statusForm-{{ $event->id }}').submit()">
-                                <option value="1" {{ $event->status == 1 ? 'selected' : '' }}>
-                                  {{ __('Active') }}
-                                </option>
-                                <option value="0" {{ $event->status == 0 ? 'selected' : '' }}>
-                                  {{ __('Deactive') }}
-                                </option>
-                              </select>
-                            </form>
-                          </td>
-                          <td>
+                        <td>
+                          <a href="{{ route('admin.event_management.attach_artists_view',$event->id) }}"
+                             class="btn btn-success btn-sm">{{ __('Manage') }}</a>
+                        </td>
 
-                            <form id="featuredForm-{{ $event->id }}" class="d-inline-block"
-                              action="{{ route('admin.event_management.event.update_featured', ['id' => $event->id]) }}"
-                              method="post">
+                        <td>
+                          <form id="statusForm-{{ $event->id }}" class="d-inline-block"
+                                action="{{ route('admin.event_management.event.event_status', ['id' => $event->id, 'language' => request()->input('language')]) }}"
+                                method="post">
 
-                              @csrf
-                              <select
-                                class="form-control form-control-sm {{ $event->is_featured == 'yes' ? 'bg-success' : 'bg-danger' }}"
-                                name="is_featured"
-                                onchange="document.getElementById('featuredForm-{{ $event->id }}').submit()">
-                                <option value="yes" {{ $event->is_featured == 'yes' ? 'selected' : '' }}>
-                                  {{ __('Yes') }}
-                                </option>
-                                <option value="no" {{ $event->is_featured == 'no' ? 'selected' : '' }}>
-                                  {{ __('No') }}
-                                </option>
-                              </select>
-                            </form>
-                          </td>
-                          <td>
-                            <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
-                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                {{ __('Select') }}
-                              </button>
+                            @csrf
+                            <select
+                              class="form-control form-control-sm {{ $event->status == 0 ? 'bg-warning text-dark' : 'bg-primary' }}"
+                              name="status"
+                              onchange="document.getElementById('statusForm-{{ $event->id }}').submit()">
+                              <option value="1" {{ $event->status == 1 ? 'selected' : '' }}>
+                                {{ __('Active') }}
+                              </option>
+                              <option value="0" {{ $event->status == 0 ? 'selected' : '' }}>
+                                {{ __('Deactive') }}
+                              </option>
+                            </select>
+                          </form>
+                        </td>
+                        <td>
 
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a href="{{ route('admin.event_management.edit_event', ['id' => $event->id]) }}"
-                                  class="dropdown-item">
-                                  {{ __('Edit') }}
-                                </a>
+                          <form id="featuredForm-{{ $event->id }}" class="d-inline-block"
+                                action="{{ route('admin.event_management.event.update_featured', ['id' => $event->id]) }}"
+                                method="post">
 
-                                <form class="deleteForm d-block"
-                                  action="{{ route('admin.event_management.delete_event', ['id' => $event->id]) }}"
-                                  method="post">
+                            @csrf
+                            <select
+                              class="form-control form-control-sm {{ $event->is_featured == 'yes' ? 'bg-success' : 'bg-danger' }}"
+                              name="is_featured"
+                              onchange="document.getElementById('featuredForm-{{ $event->id }}').submit()">
+                              <option value="yes" {{ $event->is_featured == 'yes' ? 'selected' : '' }}>
+                                {{ __('Yes') }}
+                              </option>
+                              <option value="no" {{ $event->is_featured == 'no' ? 'selected' : '' }}>
+                                {{ __('No') }}
+                              </option>
+                            </select>
+                          </form>
+                        </td>
+                        <td>
+                          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                              {{ __('Select') }}
+                            </button>
 
-                                  @csrf
-                                  <button type="submit" class="btn btn-sm deleteBtn">
-                                    {{ __('Delete') }}
-                                  </button>
-                                </form>
-                              </div>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a href="{{ route('admin.event_management.edit_event', ['id' => $event->id]) }}"
+                                 class="dropdown-item">
+                                {{ __('Edit') }}
+                              </a>
+
+                              <form class="deleteForm d-block"
+                                    action="{{ route('admin.event_management.delete_event', ['id' => $event->id]) }}"
+                                    method="post">
+
+                                @csrf
+                                <button type="submit" class="btn btn-sm deleteBtn">
+                                  {{ __('Delete') }}
+                                </button>
+                              </form>
                             </div>
-                          </td>
-                        </tr>
-                      @endforeach
+                          </div>
+                        </td>
+                      </tr>
+                    @endforeach
                     </tbody>
                   </table>
                 </div>

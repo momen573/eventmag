@@ -21,20 +21,37 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
 
 
   //todo add place permission
-  Route::get('/places', 'BackEnd\Place\PlaceController@index')->name('admin.places.index');
-  Route::post('/places', 'BackEnd\Place\PlaceController@store')->name('admin.places.store');
-  Route::post('/places/{place}', 'BackEnd\Place\PlaceController@update')->name('admin.places.update');
-  Route::delete('/places/{place}', 'BackEnd\Place\PlaceController@destroy')->name('admin.places.destroy');
-  Route::post('/places/groups/destroy', 'BackEnd\Place\PlaceController@destroy_groups')->name('admin.places.destroy_groups');
+  Route::get('/places', 'BackEnd\Place\PlaceController@index')
+    ->name('admin.places.index');
+
+  Route::post('/places', 'BackEnd\Place\PlaceController@store')
+    ->name('admin.places.store');
+
+  Route::post('/places/{place}', 'BackEnd\Place\PlaceController@update')
+    ->name('admin.places.update');
+
+  Route::delete('/places/{place}', 'BackEnd\Place\PlaceController@destroy')
+    ->name('admin.places.destroy');
+
+  Route::post('/places/groups/destroy', 'BackEnd\Place\PlaceController@destroy_groups')
+    ->name('admin.places.destroy_groups');
 
 
   //todo add artist permission
-  Route::get('/artists', 'BackEnd\Artist\ArtistController@index')->name('admin.artists.index');
-  Route::post('/artists', 'BackEnd\Artist\ArtistController@store')->name('admin.artists.store');
-  Route::post('/artists/{artist}', 'BackEnd\Artist\ArtistController@update')->name('admin.artists.update');
-  Route::delete('/artists/{artist}', 'BackEnd\Artist\ArtistController@destroy')->name('admin.artists.destroy');
-  Route::post('/artists/groups/destroy', 'BackEnd\Artist\ArtistController@destroy_groups')->name('admin.artists.destroy_groups');
+  Route::get('/artists', 'BackEnd\Artist\ArtistController@index')
+    ->name('admin.artists.index');
 
+  Route::post('/artists', 'BackEnd\Artist\ArtistController@store')
+    ->name('admin.artists.store');
+
+  Route::post('/artists/{artist}', 'BackEnd\Artist\ArtistController@update')
+    ->name('admin.artists.update');
+
+  Route::delete('/artists/{artist}', 'BackEnd\Artist\ArtistController@destroy')
+    ->name('admin.artists.destroy');
+
+  Route::post('/artists/groups/destroy', 'BackEnd\Artist\ArtistController@destroy_groups')
+    ->name('admin.artists.destroy_groups');
 
   // change admin-panel theme (dark/light) route
   Route::post('/change-theme', 'BackEnd\AdminController@changeTheme')->name('admin.change_theme');
@@ -91,6 +108,7 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
   Route::get('/monthly-earning', 'BackEnd\AdminController@monthly_earning')->name('admin.monthly_earning');
 
   Route::group(['middleware' => 'permission:Event Management'], function () {
+
     Route::get('event-management/events/', 'BackEnd\Event\EventController@index')->name('admin.event_management.event');
     Route::get('add-event/', 'BackEnd\Event\EventController@add_event')->name('add.event.event');
     Route::get('choose-event-type/', 'BackEnd\Event\EventController@choose_event_type')->name('admin.choose-event-type');
@@ -102,6 +120,15 @@ Route::prefix('/admin')->middleware(['auth:admin'])->group(function () {
     Route::post('/delete-event/{id}', 'BackEnd\Event\EventController@destroy')->name('admin.event_management.delete_event');
     Route::get('/edit-event/{id}', 'BackEnd\Event\EventController@edit')->name('admin.event_management.edit_event');
     Route::post('/event-img-dbrmv', 'BackEnd\Event\EventController@imagedbrmv')->name('admin.event.imgdbrmv');
+
+    Route::get('event-management/events/attach_artists_view/{event}','BackEnd\Event\EventController@attach_artists_view')
+      ->name('admin.event_management.attach_artists_view');
+
+    Route::post('event-management/events/attach_artists/{event}','BackEnd\Event\EventController@attach_artists')
+      ->name('admin.event_management.attach_artists');
+
+    Route::post('event-management/events/detach_artists/{event}', 'BackEnd\Event\EventController@detach_artists')
+      ->name('admin.event_management.detach_artists');
 
     Route::get('/delete-date/{id}', 'BackEnd\Event\EventController@deleteDate')->name('admin.event.delete.date');
 

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Event\Ticket;
 use App\Models\Event\Wishlist;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Event extends Model
 {
@@ -69,5 +70,9 @@ class Event extends Model
   public function dates()
   {
     return $this->hasMany(EventDates::class);
+  }
+  public function artists(): BelongsToMany
+  {
+    return $this->belongsToMany(Artist::class, 'artist_events');
   }
 }
