@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Test\TestController;
 use Illuminate\Support\Facades\Route;
-use Spatie\GoogleCalendar\Event;
+
+Route::get('/test', TestController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +45,6 @@ Route::middleware('change.lang')->prefix('/customer')->group(function () {
     #====google
     Route::get('auth/google', 'FrontEnd\CustomerController@googleRedirect')->name('auth.google');
     /*---socialite end---*/
-
 
 
     Route::get('/forget-password', 'FrontEnd\CustomerController@forget_passord')->name('customer.forget.password');
@@ -193,13 +194,15 @@ Route::post('/product-order/paytm/notify', 'FrontEnd\Shop\PaymentGateway\PaytmCo
 
 Route::post('/product-order/flutterwave/notify', 'FrontEnd\Shop\PaymentGateway\FlutterwaveController@notify')->name('product_order.flutterwave.notify');
 
+//Route::post('/product-order/coinbase',
+//  'FrontEnd\Shop\PaymentGateway\CoinbaseController@bookingProcess')
+//  ->name('product_order.coinbase.notify');
+
 /*
 |---------------------------------------------------------------------------------
 | Product order routes are end
 |---------------------------------------------------------------------------------
 */
-
-
 
 
 Route::middleware('change.lang')->group(function () {
@@ -217,7 +220,6 @@ Route::middleware('change.lang')->group(function () {
 Route::post('/contact/send-mail', 'FrontEnd\ContactController@sendMail')->name('contact.send_mail');
 
 Route::post('/advertisement/{id}/total-view', 'Controller@countAdView');
-
 
 
 // service unavailable route

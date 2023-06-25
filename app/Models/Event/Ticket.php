@@ -36,4 +36,8 @@ class Ticket extends Model
   {
     return $this->hasMany(TicketVariation::class);
   }
+
+  protected $casts=[
+    'variations'=>'array'
+  ];
 }

@@ -20,6 +20,7 @@ class VerifyCsrfToken extends Middleware
     '/product-order/razorpay/notify',
     '/product-order/mercadopago/notify',
     '/product-order/paytm/notify',
-    'organizer/check-qrcode/'
+    'organizer/check-qrcode/',
+//    '/product-order/coinbase',
   ];
 }

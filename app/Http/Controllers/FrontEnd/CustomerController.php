@@ -66,7 +66,7 @@ class CustomerController extends Controller
 
     $info = Basic::select('google_recaptcha_status')->first();
     if ($info->google_recaptcha_status == 1) {
-      $rules['g-recaptcha-response'] = 'required|captcha';
+      $rules['g-recaptcha-response'] = 'nullable|captcha';
     }
 
     $messages = [];
@@ -209,7 +209,7 @@ class CustomerController extends Controller
 
     $info = Basic::select('google_recaptcha_status')->first();
     if ($info->google_recaptcha_status == 1) {
-      $rules['g-recaptcha-response'] = 'required|captcha';
+      $rules['g-recaptcha-response'] = 'nullable|captcha';
     }
 
     $messages = [];

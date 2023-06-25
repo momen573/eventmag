@@ -27,9 +27,11 @@
     "phpmailer/phpmailer": "^6.4",
     "rachidlaasri/laravel-installer": "^4.1",
     "razorpay/razorpay": "2.*",
+    "shakurov/coinbase": "^0.7.7",
     "shetabit/payment": "^5.2",
     "simplesoftwareio/simple-qrcode": "~4",
-    "spatie/laravel-cookie-consent": "^3.2.0"
+    "spatie/laravel-cookie-consent": "^3.2.0",
+    "ext-curl": "*"
   },
   "require-dev": {
     "spatie/laravel-ignition": "^1.0",
