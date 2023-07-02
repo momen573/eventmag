@@ -83,7 +83,24 @@
                       <input type="file" class="img-input" name="thumbnail">
                     </div>
                   </div>
+
                   <p class="text-warning">{{ __('Image Size : 320x230') }}</p>
+                </div>
+                <div class="form-group">
+                  <label for="">{{ __('Background Image') . '*' }}</label>
+                  <br>
+                  <div class="thumb-preview">
+                    <img src="{{ asset('assets/admin/img/noimage.jpg') }}" alt="..." class="uploaded-img2">
+                  </div>
+
+                  <div class="mt-3">
+                    <div role="button" class="btn btn-primary btn-sm upload-btn">
+                      {{ __('Choose Image') }}
+                      <input type="file" class="img-input2" name="background">
+                    </div>
+                  </div>
+
+                  <p class="text-warning">{{ __('Image Size : 3338*1313') }}</p>
                 </div>
 
                 <div class="row">

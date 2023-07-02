@@ -198,8 +198,9 @@ class EventBookingController extends Controller
     return redirect()->back();
   }
 
-  public function generateInvoice($bookingInfo)
+  public function generateInvoice ( $bookingInfo)
   {
+    $bookingInfo=Booking::find($bookingInfo);
     $fileName = $bookingInfo->booking_id . '.pdf';
     $directory = public_path('assets/admin/file/invoices/');
 
@@ -215,7 +216,7 @@ class EventBookingController extends Controller
     $language = $this->getLanguage();
 
     $eventInfo = EventContent::where('event_id', $bookingInfo->event_id)->where('language_id', $language->id)->first();
-
+    $event=Event::where('id' ,$bookingInfo->event_id)->first();
     $width = "50%";
     $float = "right";
     $mb = "35px";

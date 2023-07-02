@@ -18,6 +18,7 @@ class Event extends Model
   protected $fillable = [
     'organizer_id',
     'thumbnail',
+    'background',
     'status',
     'countdown_status',
     'date_type',

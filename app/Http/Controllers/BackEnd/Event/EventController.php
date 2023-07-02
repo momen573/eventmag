@@ -154,6 +154,14 @@ class EventController extends Controller
         $request->file('thumbnail')->move($directory, $filename);
         $in['thumbnail'] = $filename;
       }
+      $img2 = $request->file('background');
+      if ($request->hasFile('background')) {
+        $filename = time() . '.' . $img2->getClientOriginalExtension();
+        $directory = public_path('assets/admin/img/event/background/');
+        @mkdir($directory, 0775, true);
+        $request->file('background')->move($directory, $filename);
+        $in['background'] = $filename;
+      }
       $in['f_price'] = $request->price;
       $in['end_date_time'] = Carbon::parse($request->end_date . ' ' . $request->end_time);
       $event = Event::create($in);
@@ -349,7 +357,14 @@ class EventController extends Controller
       $request->file('thumbnail')->move(public_path('assets/admin/img/event/thumbnail/'), $filename);
       $in['thumbnail'] = $filename;
     }
-
+    $img = $request->file('background');
+    if ($request->hasFile('background')) {
+      @unlink(public_path('assets/admin/img/event/background/') . $event->background);
+      $filename = time() . '.' . $img->getClientOriginalExtension();
+      @mkdir(public_path('assets/admin/img/event/background/'), 0775, true);
+      $request->file('background')->move(public_path('assets/admin/img/event/background/'), $filename);
+      $in['background'] = $filename;
+    }
     $languages = Language::all();
 
     $i = 1;
